@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Questionário da Sanidade da Kelly</title>
+    <style>
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-size: 24px;
+            font-weight: bold;
+            margin: 0;
+            background-image: url('Gatin.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            color: #ffffff;
+        }
+
+        #content {
+            text-align: center;
+        }
+
+        #response-buttons {
+            margin-top: 20px;
+        }
+
+        .button {
+            display: inline-block;
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+            text-align: center;
+            text-decoration: none;
+            outline: none;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            transition: background-color 0.3s;
+        }
+
+        #yes-button {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        #no-button {
+            background-color: #f44336;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <p id="question">Esse aqui vai ser um simples questionário de "sim" e "não" <br> pra tu refletir sobre ir para a
+            área de medicina.<br> Eu tava meio entediado, ok? <br> Podemos começar?</p>
+        <div id="response-buttons">
+            <button id="yes-button" class="button" onclick="responder('sim')">Sim</button>
+            <button id="no-button" class="button" onclick="responder('nao')">Não</button>
+        </div>
+    </div>
+
+    <script>
+        var perguntas = [
+            'Você quer ser médica?',
+            'Você não se importa com o que os outros pensam?<br> Exemplo de Resposta: Sim, eu não me importo.',
+            'Seus pais estão te obrigando a algo?',
+            'Se não fosse médica, sabe para qual área iria?',
+            'O Vini é legal? :)',
+            'Você gosta de ajudar as pessoas?',
+            'Você estaria disposta a "sacrificar" anos da sua vida pela medicina?',
+            'Veja o vídeo a seguir: https://www.youtube.com/watch?v=sx4OxLFHrZ0. <br> Você viu o vídeo?',
+            'Ainda falta muito tempo pra pensar sobre isso.<br> Acho que foi só um comentário momentâneo ao invés de uma preocupação real.<br> Sabe que ainda tem tempo pra isso, não sabe?',
+            'Quantos anos você tem?',
+            'Você gosta de Guns n roses?',
+            'Hahahahaha.<br>Sem piada agora.<br> Última pergunta: Você acredita que as coisas do mundo são pré determinadas a acontecer?'
+        ];
+
+        var indicePerguntaAtual = -1;
+        var contadorSim = 0;
+        var contadorNao = 0;
+
+        function responder(resposta) {
+            if (resposta === 'sim') {
+                contadorSim++;
+            } else if (resposta === 'nao') {
+                contadorNao++;
+            }
+
+            if (indicePerguntaAtual < perguntas.length - 1) {
+                var botaoSim = document.getElementById("yes-button");
+                var botaoNao = document.getElementById("no-button");
+
+                indicePerguntaAtual++;
+                var novaPergunta = obterNovaPergunta();
+                document.getElementById("question").innerHTML = novaPergunta;
+
+                // Esconde o botão "Não" na pergunta 8
+                var botaoNao = document.getElementById("no-button");
+                botaoNao.style.display = (indicePerguntaAtual === -1) ? "none" : "inline-block";
+
+                if (indicePerguntaAtual === 7) {
+                    botaoNao.style.display = "none";
+                    botaoSim.style.display = "inline-block";
+                } else if (indicePerguntaAtual === 10) {
+                    botaoSim.style.display = "none";
+                    botaoNao.style.display = "inline-block";
+                }
+                else {
+                    botaoSim.style.display = "inline-block";
+                    botaoNao.style.display = "inline-block";
+                }
+
+            } else {
+                // Remove os botões da tela
+                var botoes = document.getElementById("response-buttons");
+                botoes.style.display = "none";
+
+                document.getElementById("question").style.display = "none";
+
+                // Calcula o resultado final e exibe a mensagem
+                exibirResultadoFinal();
+            }
+        }
+
+        function obterNovaPergunta() {
+            return perguntas[indicePerguntaAtual];
+        }
+
+        function exibirResultadoFinal() {
+            var resultadoFinal = (contadorSim > contadorNao) ? "Olha, tudo indica que você quer sim ir pra área e confia, vai ser divertido! <br> Ainda tem tempo pra ver isso, foi só pra descontrair mesmo.<br> Pra que se preocupar em salvar outras vidas enquanto a tua na Liberato ainda não foi salva? O que for pra ser será.<br> Apenas relaxe. 😉" : "Catapimbas, então você não está motivada em ir pra medicina? Faz parte.<br> Ainda dá tempo de pensar, hein.<br> Indecisão é tenso, mas no fim tu vai e tem que fazer o que for melhor pra ti.";
+            var mensagemFinal = document.createElement("p");
+            mensagemFinal.innerHTML = resultadoFinal;
+            document.getElementById("content").appendChild(mensagemFinal);
+        }
+    </script>
+</body>
+
+</html>
